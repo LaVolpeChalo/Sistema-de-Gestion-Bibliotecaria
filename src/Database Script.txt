@@ -1,0 +1,54 @@
+CREATE TABLE Usuarios (
+    IDUsuario int NOT NULL UNIQUE,
+    Nombre varchar(255) NOT NULL,
+    PRIMARY KEY (IDUsuario)
+);
+
+CREATE TABLE Libros (
+    ISBNLibro varchar(13) NOT NULL UNIQUE,
+    Titulo varchar(255) NOT NULL,
+    Autor varchar(255) NOT NULL,
+    Disponible BOOL NOT NULL,
+
+    PRIMARY KEY (ISBNLibro)
+);
+
+CREATE TABLE PRESTAMOS (
+    ID int NOT NULL UNIQUE,
+    IDUsuario int NOT NULL,
+    ISBNLibro varchar(13) NOT NULL,
+    FechaPrestamo DATE NOT NULL,
+    FechaDevolución DATE,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDUsuario) REFERENCES Usuarios(IDUsuario),
+    FOREIGN KEY (ISBNLibro) REFERENCES Libros(ISBNLibro)
+);
+
+
+
+
+Población de Base de Datos:
+
+INSERT INTO usuarios (idusuario, nombre) VALUES
+(1, 'María González Pérez'),
+(2, 'Carlos Jiménez López'),
+(3, 'Ana Patricia Martínez'),
+(4, 'Luis Fernando Rodríguez'),
+(5, 'Sofía Hernández Díaz'),
+(6, 'Pedro Antonio Sánchez'),
+(7, 'Elena Ruiz Gómez'),
+(8, 'Jorge Ramírez Flores'),
+(9, 'Laura Beatriz Castro'),
+(10, 'David Morales Ortega');
+
+INSERT INTO libros (isbnlibro, titulo, autor, disponible) VALUES
+(9788415089360, 'Así Hablaba Zaratustra', 'Friedrich Nietzche', TRUE),
+(9789807716062, 'Un Mundo Feliz', 'Aldous Huxley', TRUE),
+(9789566267560, '1984', 'George Orwell', TRUE),
+(9789566430094, 'Romeo y Julieta' , 'William Shakespeare', TRUE),
+(9789569963872, 'Las Crónicas de Narnia: El león, la bruja y el ropero','Clive Staples Lewis', TRUE),
+(9789566075936, 'Harry Potter y el cáliz de fuego' ,'Joanne Rowling', TRUE),
+(9789566430124, 'Alicia en el País de las Maravillas', 'Lewis Carroll', TRUE),
+(9789566265641, 'La Odisea', 'Homero', TRUE),
+(9789566265702, 'La Iliada', 'Homero', TRUE),
+(9789560018717, 'Lo que dispersó la Aurora', 'Safo', TRUE)
