@@ -20,38 +20,33 @@ class Biblioteca:
         trash = self.libros.pop(isbn)
 
     def registrar_usuario(self, usuario):
-        if any(usuario.nombre == u.nombre for u in self.usuarios.values()): raise ValueError("Usuario Ya registrado")
-        if (usuario.id_usuario == 'None'):    
-            id = 0
-            while(str(id) in self.usuarios):
-                id += 1
-            usuario.id_usuario = id
-        self.usuarios[usuario.id_usuario] = usuario
+        if (self.usuarios.get(usuario.rut)): raise ValueError("Usuario Ya registrado")
+        self.usuarios[usuario.rut] = usuario
         
-    def eliminar_usuario(self, id):
-        if not any(u.id_usuario == id for u in self.usuarios.values()): raise ValueError("El Usuario no se encuentra en el registro")
-        if any (p.idus == id for p in self.prestamos.values()): raise ValueError("El usuario posee historial de prestamos")
+    def eliminar_usuario(self, rut):
+        if (self.usuarios.get(rut) is None): raise ValueError("El Usuario no se encuentra en el registro")
+        if any (p.rut == rut for p in self.prestamos.values()): raise ValueError("El usuario posee historial de prestamos")
         self.usuarios.pop(id)
       
     def prestar_libro(self, prestamo):
         if prestamo.fecha_prestamo == None and prestamo.id == 'None':
-            if (self.usuarios.get(prestamo.idus) is None or self.libros.get(prestamo.isbn) is None): raise ValueError ("Usuario o Libro inexistente")
+            if (self.usuarios.get(prestamo.rut) is None or self.libros.get(prestamo.isbn) is None): raise ValueError ("Usuario o Libro inexistente")
             if not (self.libros[prestamo.isbn].disponible): raise ValueError ("Libro no Disponible")
             prestamo.fecha_prestamo = datetime.datetime.now()
             prestamo.id = len(self.prestamos)
-        self.usuarios.get(prestamo.idus).libros_prestados.append(self.libros.get(prestamo.isbn))
+        self.usuarios.get(prestamo.rut).libros_prestados.append(self.libros.get(prestamo.isbn))
         self.libros.get(prestamo.isbn)._disponible = False
 
         self.prestamos[prestamo.id] = prestamo
 
-    def devolver_libro(self, isbn, id_usuario):
-        if (self.usuarios.get(id_usuario) is None or self.libros.get(isbn) is None): raise ValueError ("Usuario o Libro inexistente")
-        if not any (isbn == x.isbn for x in (self.usuarios.get(id_usuario).libros_prestados)): raise ValueError ("Usuario no Posee Libro")
+    def devolver_libro(self, isbn, rut):
+        if (self.usuarios.get(rut) is None or self.libros.get(isbn) is None): raise ValueError ("Usuario o Libro inexistente")
+        if not any (isbn == x.isbn for x in (self.usuarios.get(rut).libros_prestados)): raise ValueError ("Usuario no Posee Libro")
         for i in self.prestamos.values(): 
-            if(i.isbn == isbn and i.idus == id_usuario and i.fecha_devolución == None):
+            if(i.isbn == isbn and i.rut == rut and i.fecha_devolución == None):
                 self.prestamos[i.id].fecha_devolución = datetime.datetime.now()
                 continue
-        self.usuarios.get(id_usuario).libros_prestados.remove(self.libros.get(isbn))
+        self.usuarios.get(rut).libros_prestados.remove(self.libros.get(isbn))
         self.libros.get(isbn).disponible = True
 
         

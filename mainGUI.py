@@ -47,7 +47,7 @@ VLD = lambda: [ #Ver Libros Disponibles
 VUR = lambda: [ #Ver Usuarios Registrados
         [sg.Table(values=biblioteca.mostrar_usuarios() ,
                   
-        headings = ['ID Usuario', 'Nombre', 'Libros Arrendados'])],
+        headings = ['Rut Usuario', 'Nombre', 'Libros Arrendados'])],
 
         [sg.Button('Cerrar')]   ]
 
@@ -61,53 +61,55 @@ VPA = lambda: [ #Ver Prestamos Activos
 VHP = lambda: [#Historial de Prestamos
     [sg.Table(values=biblioteca.mostrar_prestamos(),
 
-    headings = ['ID', 'ID Usuario', 'ISBN Libro', 'Fecha Prestamo', 'Fecha Devolución'])],
+    headings = ['ID', 'Rut Usuario', 'ISBN Libro', 'Fecha Prestamo', 'Fecha Devolución'])],
 
     [sg.Button('Cerrar')]   ]
 
 CFU = lambda: [#Consultar Ficha Usuario
-    [sg.Text('Ingrese ID de Usuario')],
-    [sg.Input(key = 'ID')],
+    [sg.Text('Rut Usuario')],
+    [sg.Input(default_text = 'Ej:12.345.678-9', key = 'Rut')],
     [sg.Button('Buscar')],
     [sg.Table(values = [], headings = ['ID Usuario', 'Nombre', 'Libros Arrendados'], key = 'Datos_Usuario')],
     [sg.Button('Cerrar')]   ]
 
 RU = lambda: [#Registrar Usuario
     [sg.Text('Ingrese Nombre Usuario')],
-    [sg.Input(key = 'Nombre')],
+    [sg.Input(default_text = 'Ej: Darth Vader', key = 'Nombre')],
+    [sg.Text('Ingrese Rut Usuario')],
+    [sg.Input(default_text = 'Ej: 12.345.678-9', key = 'Rut')],
     [sg.Button('Cancelar'), sg.Button('Registrar')] ]
 
 RL = lambda: [#Registrar Libro
     [sg.Text('ISBN')],
-    [sg.Input(key = 'ISBN')],
+    [sg.Input(default_text = 'Ej: 123-45-67890-12-3', key = 'ISBN')],
     [sg.Text('Titulo')],
-    [sg.Input(key = 'Titulo')],
+    [sg.Input(default_text = 'Ej: El Libro Troll', key = 'Titulo')],
     [sg.Text('Autor')],
-    [sg.Input(key = 'Autor')],
+    [sg.Input(default_text = 'Franz Kafka', key = 'Autor')],
     [sg.Button('Cancelar'), sg.Button('Registrar')] ]
 
 PL = lambda: [#Prestar Libro
-    [sg.Text('ID Usuario')],
-    [sg.Input(key = 'ID')],
+    [sg.Text('Rut Usuario')],
+    [sg.Input(default_text = 'Ej: 12.345.678-9', key = 'Rut')],
     [sg.Text('ISBN Libro')],
-    [sg.Input(key = 'ISBN')],
+    [sg.Input(default_text = 'Ej: 123-45-67890-12-3', key = 'ISBN')],
     [sg.Button('Cancelar'), sg.Button('Registrar')] ]
 
 EU = lambda: [#Eliminar Usuario
-    [sg.Text('ID Usuario')],
-    [sg.Input(key = 'ID')],
+    [sg.Text('Rut Usuario')],
+    [sg.Input(default_text = '12.345.678-9', key = 'Rut')],
     [sg.Button('Cancelar'), sg.Button('Eliminar')]  ]
 
 EL = lambda: [#Eliminar Libro
     [sg.Text('ISBN')],
-    [sg.Input(key = 'ISBN')],
+    [sg.Input(default_text = 'Ej: 123-45-67890-12-3', key = 'ISBN')],
     [sg.Button('Cancelar'), sg.Button('Eliminar')]  ]
 
 DL = lambda: [#Devolver Libro
     [sg.Text('ISBN')],
-    [sg.Input(key = 'ISBN')],
-    [sg.Text('ID Usuario')],
-    [sg.Input(key = 'ID')],
+    [sg.Input(default_text = 'Ej: 123-45-67890-12-3', key = 'ISBN')],
+    [sg.Text('Rut Usuario')],
+    [sg.Input(default_text = 'Ej: 12.345.678-9', key = 'Rut')],
     [sg.Button('Cancelar'), sg.Button('Devolver')]  ]
 
 layout = [  
@@ -168,14 +170,14 @@ while True:
 
             if(event2 == 'Buscar'):
                 try:
-                    id_usuario = values2['ID']
+                    id_usuario = values2['Rut']
                 
                     usuario = biblioteca.usuarios[id_usuario]
 
                     window2['Datos_Usuario'].update(values = [usuario.__str__()])
 
                 except Exception as e:
-                    window2['Datos_Usuario'].update(values = [f'ID {e} Inexistente'])
+                    window2['Datos_Usuario'].update(values = [f'Rut {e} Inexistente'])
 
             if(event2 == sg.WIN_CLOSED or event2 == 'Cerrar'):
                 window2.close()
@@ -188,7 +190,7 @@ while True:
 
             if(event2 == 'Registrar'):
                 try:
-                    us = Usuario(None, values2['Nombre'])
+                    us = Usuario(values2['Rut'], values2['Nombre'])
                     biblioteca.registrar_usuario(us)
                     sg.popup(auto_close = 5, keep_on_top = True, modal = True, button_color =('Black','Green'), custom_text = f'Registro Exitoso')
                     window2.close()
@@ -226,7 +228,7 @@ while True:
 
             if(event2 == 'Registrar'):
                 try:
-                    prestamo = Prestamo(None, values2['ID'], values2['ISBN'], None, None)
+                    prestamo = Prestamo(None, values2['Rut'], values2['ISBN'], None, None)
                     biblioteca.prestar_libro(prestamo)
                     sg.popup(auto_close = 5, keep_on_top = True, modal = True, button_color = ('Black', 'Green'), custom_text = f'Registro Exitoso')
                     window2.close()
@@ -245,7 +247,7 @@ while True:
 
             if(event2 == 'Eliminar'):
                 try:
-                    biblioteca.eliminar_usuario(values2['ID'])
+                    biblioteca.eliminar_usuario(values2['Rut'])
                     sg.popup(auto_close = 5, keep_on_top = True, modal = True, button_color = ('Black', 'Green'), custom_text = f'Eliminación Exitosa')
                     window2.close()
                     break
@@ -282,7 +284,7 @@ while True:
 
             if(event2 == 'Devolver'):
                 try:
-                    biblioteca.devolver_libro(values2['ISBN'], values2['ID'])
+                    biblioteca.devolver_libro(values2['ISBN'], values2['Rut'])
                     sg.popup(auto_close = 5, keep_on_top = True, modal = True, button_color = ('Black', 'Green'), custom_text = f'Devolución Exitosa')
                     window2.close()
                     break

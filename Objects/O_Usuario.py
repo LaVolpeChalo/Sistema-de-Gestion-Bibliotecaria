@@ -1,12 +1,12 @@
 class Usuario:
-    def __init__(self, id_u, nom):
+    def __init__(self, rut, nom):
         
-        self.id_usuario = id_u
+        self.rut = rut
         self.nombre = nom
         self._libros_prestados = []
         
     def __str__(self): #modificar str
-        ret = [f"{self._id_usuario}",f"{self._nombre}"]
+        ret = [f"{self._rut}",f"{self._nombre}"]
         
         if(len(self._libros_prestados) == 0): ret.append("No posee")
         else:
@@ -18,7 +18,7 @@ class Usuario:
     @property
     def libros_prestados(self): return self._libros_prestados
     @property
-    def id_usuario(self):   return self._id_usuario
+    def rut(self):   return self._rut
     @property
     def nombre(self):   return self._nombre
     @nombre.setter
@@ -28,6 +28,6 @@ class Usuario:
         if (nombre.isdigit()):    raise TypeError("El Nombre no puede ser solo numeros")
         
         self._nombre = nombre
-    @id_usuario.setter
-    def id_usuario(self, id_u):  self._id_usuario = str(id_u)
+    @rut.setter
+    def rut(self, rut):  self._rut = str(rut)
     

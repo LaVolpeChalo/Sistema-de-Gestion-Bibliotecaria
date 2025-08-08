@@ -1,11 +1,11 @@
 CREATE TABLE Usuarios (
-    IDUsuario int NOT NULL UNIQUE,
+    RutUsuario varchar(12) NOT NULL UNIQUE,
     Nombre varchar(255) NOT NULL,
-    PRIMARY KEY (IDUsuario)
+    PRIMARY KEY (RutUsuario)
 );
 
 CREATE TABLE Libros (
-    ISBNLibro varchar(13) NOT NULL UNIQUE,
+    ISBNLibro varchar(17) NOT NULL UNIQUE,
     Titulo varchar(255) NOT NULL,
     Autor varchar(255) NOT NULL,
     Disponible BOOL NOT NULL,
@@ -15,12 +15,12 @@ CREATE TABLE Libros (
 
 CREATE TABLE PRESTAMOS (
     ID int NOT NULL UNIQUE,
-    IDUsuario int NOT NULL,
-    ISBNLibro varchar(13) NOT NULL,
+    RutUsuario varchar(12) NOT NULL,
+    ISBNLibro varchar(17) NOT NULL,
     FechaPrestamo DATE NOT NULL,
     FechaDevolución DATE,
     PRIMARY KEY (ID),
-    FOREIGN KEY (IDUsuario) REFERENCES Usuarios(IDUsuario),
+    FOREIGN KEY (RutUsuario) REFERENCES Usuarios(RutUsuario),
     FOREIGN KEY (ISBNLibro) REFERENCES Libros(ISBNLibro)
 );
 
@@ -29,26 +29,26 @@ CREATE TABLE PRESTAMOS (
 
 Población de Base de Datos:
 
-INSERT INTO usuarios (idusuario, nombre) VALUES
-(1, 'María González Pérez'),
-(2, 'Carlos Jiménez López'),
-(3, 'Ana Patricia Martínez'),
-(4, 'Luis Fernando Rodríguez'),
-(5, 'Sofía Hernández Díaz'),
-(6, 'Pedro Antonio Sánchez'),
-(7, 'Elena Ruiz Gómez'),
-(8, 'Jorge Ramírez Flores'),
-(9, 'Laura Beatriz Castro'),
-(10, 'David Morales Ortega');
+INSERT INTO usuarios (RutUsuario, nombre) VALUES
+('17.654.321-9', 'María González Pérez'),
+('20.458.763-1', 'Carlos Jiménez López'),
+('14.325.678-9', 'Ana Patricia Martínez'),
+('18.765.432-K', 'Luis Fernando Rodríguez'),
+('11.222.333-4', 'Sofía Hernández Díaz'),
+('19.283.746-5', 'Pedro Antonio Sánchez'),
+('13.467.985-2', 'Elena Ruiz Gómez'),
+('20.938.475-6', 'Jorge Ramírez Flores'),
+('16.543.278-1', 'Laura Beatriz Castro'),
+('11.876.543-2', 'David Morales Ortega');
 
 INSERT INTO libros (isbnlibro, titulo, autor, disponible) VALUES
-(9788415089360, 'Así Hablaba Zaratustra', 'Friedrich Nietzche', TRUE),
-(9789807716062, 'Un Mundo Feliz', 'Aldous Huxley', TRUE),
-(9789566267560, '1984', 'George Orwell', TRUE),
-(9789566430094, 'Romeo y Julieta' , 'William Shakespeare', TRUE),
-(9789569963872, 'Las Crónicas de Narnia: El león, la bruja y el ropero','Clive Staples Lewis', TRUE),
-(9789566075936, 'Harry Potter y el cáliz de fuego' ,'Joanne Rowling', TRUE),
-(9789566430124, 'Alicia en el País de las Maravillas', 'Lewis Carroll', TRUE),
-(9789566265641, 'La Odisea', 'Homero', TRUE),
-(9789566265702, 'La Iliada', 'Homero', TRUE),
-(9789560018717, 'Lo que dispersó la Aurora', 'Safo', TRUE)
+('978-84-15089-36-0', 'Así Hablaba Zaratustra', 'Friedrich Nietzche', TRUE),
+('978-980-7716-06-2', 'Un Mundo Feliz', 'Aldous Huxley', TRUE),
+('978-956-6267-56-0', '1984', 'George Orwell', TRUE),
+('978-956-6430-09-4', 'Romeo y Julieta' , 'William Shakespeare', TRUE),
+('978-956-9963-87-2', 'Las Crónicas de Narnia: El león, la bruja y el ropero','Clive Staples Lewis', TRUE),
+('978-956-6075-93-6', 'Harry Potter y el cáliz de fuego' ,'Joanne Rowling', TRUE),
+('978-956-6430-12-4', 'Alicia en el País de las Maravillas', 'Lewis Carroll', TRUE),
+('978-956-13-1764-2', 'La Odisea', 'Homero', TRUE),
+('978-956-62-6570-2', 'La Iliada', 'Homero', TRUE),
+('978-956-00-1871-7', 'Lo que dispersó la Aurora', 'Safo', TRUE)

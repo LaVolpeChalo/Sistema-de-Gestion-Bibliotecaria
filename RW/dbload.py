@@ -74,18 +74,18 @@ def save(titirilken):
         #Traspaso Usuarios a BD
         contenedor = titirilken.usuarios.values()
 
-        data = [(u.id_usuario, u.nombre) for u in contenedor]
+        data = [(u.rut, u.nombre) for u in contenedor]
 
 
-        cursor.executemany("""INSERT INTO usuarios(idusuario, nombre)
+        cursor.executemany("""INSERT INTO usuarios(rutusuario, nombre)
                            Values (%s, %s);""", data)
 
         #Traspaso Prestamos a BD
         contenedor = titirilken.prestamos.values()
 
-        data = [(p.id, p.idus, p.isbn, p.fecha_prestamo, p.fecha_devolución) for p in contenedor]
+        data = [(p.id, p.rut, p.isbn, p.fecha_prestamo, p.fecha_devolución) for p in contenedor]
 
-        cursor.executemany("""INSERT INTO prestamos(id, idusuario, isbnlibro, fechaprestamo, fechadevolución)
+        cursor.executemany("""INSERT INTO prestamos(id, rutusuario, isbnlibro, fechaprestamo, fechadevolución)
                            Values (%s, %s, %s, %s, %s)""", data)
         
         connection.commit()#Se hace commit de todo
