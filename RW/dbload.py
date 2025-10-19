@@ -5,7 +5,7 @@ from Objects.O_Usuario import Usuario
 from Objects.O_Prestamo import Prestamo
 
 
-def load(titirilken):
+def load(biblioteca):
     try:
         connection = psycopg2.connect(
             host = 'localhost',
@@ -23,24 +23,25 @@ def load(titirilken):
         cursor.execute('SELECT * FROM libros;')
         for row in cursor.fetchall():
             lib = Libro(*row)
-            titirilken.agregar_libro(lib)
+            biblioteca.agregar_libro(lib)
 
         cursor.execute('SELECT * FROM usuarios;')
         for row in cursor.fetchall():
             us = Usuario(*row)
-            titirilken.registrar_usuario(us)
+            biblioteca.registrar_usuario(us)
 
         cursor.execute('SELECT * FROM prestamos;')
         for row in cursor.fetchall():
             pres = Prestamo(*row)
             pres.idus =str(pres.idus)
             if(pres.fecha_devolución != None):
-                titirilken.prestamos[str(pres.id)] = pres
+                biblioteca.prestamos[str(pres.id)] = pres
             else:
-                titirilken.prestar_libro(pres)
-        
+                biblioteca.prestar_libro(pres)
+        ##connection.close()
     
     except Exception as e:
+        ##connection.close()
         print(e)
 
 
@@ -90,5 +91,7 @@ def save(titirilken):
         
         connection.commit()#Se hace commit de todo
 
+        ##connection.close()
     except Exception as e:
+        ##connection.close()
         print(e)

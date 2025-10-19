@@ -1,11 +1,11 @@
 CREATE TABLE Usuarios (
-    RutUsuario varchar(12) NOT NULL UNIQUE,
+    RutUsuario varchar(12),
     Nombre varchar(255) NOT NULL,
     PRIMARY KEY (RutUsuario)
 );
 
 CREATE TABLE Libros (
-    ISBNLibro varchar(17) NOT NULL UNIQUE,
+    ISBNLibro varchar(17),
     Titulo varchar(255) NOT NULL,
     Autor varchar(255) NOT NULL,
     Disponible BOOL NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE Libros (
 );
 
 CREATE TABLE PRESTAMOS (
-    ID int NOT NULL UNIQUE,
+    ID int,
     RutUsuario varchar(12) NOT NULL,
     ISBNLibro varchar(17) NOT NULL,
     FechaPrestamo DATE NOT NULL,
