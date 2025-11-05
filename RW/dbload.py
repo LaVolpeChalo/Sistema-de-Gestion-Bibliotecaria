@@ -1,24 +1,21 @@
 import psycopg2
+import FreeSimpleGUI as sg
 from Objects.O_Biblioteca import Biblioteca
 from Objects.O_Libro import Libro
 from Objects.O_Usuario import Usuario
 from Objects.O_Prestamo import Prestamo
+from layouts.layouts_Pop_Ups import LayoutsPopUps
 
 
-def load(biblioteca):
+def load(biblioteca, dbkey):
     try:
-        connection = psycopg2.connect(
-            host = 'localhost',
-            user = 'postgres',
-            password = '1234',
-            database = 'Test'
-
-        )
-        print("\nConexión Exitosa\n")
-
+        connection = psycopg2.connect(host = dbkey['host'], 
+                                      user = dbkey['user'], 
+                                      password = dbkey['password'], 
+                                      database = dbkey['database'])
+        LayoutsPopUps.ExitoConexion()
 
         cursor =   connection.cursor()
-
 
         cursor.execute('SELECT * FROM libros;')
         for row in cursor.fetchall():
@@ -38,26 +35,21 @@ def load(biblioteca):
                 biblioteca.prestamos[str(pres.id)] = pres
             else:
                 biblioteca.prestar_libro(pres)
-        ##connection.close()
+        connection.close()
     
     except Exception as e:
-        ##connection.close()
-        print(e)
+        LayoutsPopUps.ErrorConexion(e)
 
 
-def save(titirilken):
+def save(biblioteca, dbkey):
+    if(len(dbkey) == 0): return LayoutsPopUps.Nulldbkey()
     try:
-        connection = psycopg2.connect(
-            host = 'localhost',
-            user = 'postgres',
-            password = '1234',
-            database = 'Test'
-
-        )
-
+        connection = psycopg2.connect(host = dbkey['host'], 
+                                    user = dbkey['user'], 
+                                    password = dbkey['password'], 
+                                    database = dbkey['database'])
+        
         cursor = connection.cursor()
-
-        print("\nConexión Exitosa\n")
 
         cursor.execute('DELETE FROM prestamos;')
         cursor.execute('DELETE FROM libros;')
@@ -65,7 +57,7 @@ def save(titirilken):
 
 
         #Traspaso Libros a BD
-        contenedor = titirilken.libros.values()
+        contenedor = biblioteca.libros.values()
 
         data = [(l.isbn, l.titulo, l.autor, l.disponible) for l in contenedor]
 
@@ -73,7 +65,7 @@ def save(titirilken):
                            Values (%s, %s, %s, %s);""", data)
 
         #Traspaso Usuarios a BD
-        contenedor = titirilken.usuarios.values()
+        contenedor = biblioteca.usuarios.values()
 
         data = [(u.rut, u.nombre) for u in contenedor]
 
@@ -82,7 +74,7 @@ def save(titirilken):
                            Values (%s, %s);""", data)
 
         #Traspaso Prestamos a BD
-        contenedor = titirilken.prestamos.values()
+        contenedor = biblioteca.prestamos.values()
 
         data = [(p.id, p.rut, p.isbn, p.fecha_prestamo, p.fecha_devolución) for p in contenedor]
 
@@ -91,7 +83,8 @@ def save(titirilken):
         
         connection.commit()#Se hace commit de todo
 
-        ##connection.close()
+        LayoutsPopUps.ExitoGuardado()
+
+        connection.close()
     except Exception as e:
-        ##connection.close()
-        print(e)
+        LayoutsPopUps.FalloGuardado(e)

@@ -20,8 +20,7 @@ class LayoutsMain:
     
     Configuracion = lambda: [
         [sg.Button('Conectarse a Base de Datos')],
-        [sg.Button('Guardar Transacciones en Base de Datos')],
-        [sg.Button('Desconectar Base de Datos')]
+        [sg.Button('Guardar Transacciones en Base de Datos')]
     ]
 
 

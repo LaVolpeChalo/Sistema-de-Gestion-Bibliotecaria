@@ -38,7 +38,7 @@ class Libro:
         
     @isbn.setter
     def isbn(self,isbn): # Se Podría agregar conversor de isbn de 10 num a 13
-        if (len(isbn) > 17 or len(isbn) < 17): raise ValueError("Solo aceptamos isbn en formato de 17 digitos")
+        if (len(isbn) != 17): raise ValueError("Solo aceptamos isbn en formato de 17 digitos")
         cont = isbn.split('-')
         if  (len(cont) != 5): raise TypeError("Formato Incorrecto")
         

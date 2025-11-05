@@ -1,8 +1,5 @@
 ####Este Programa Esta Hecho Solo Con Propósitos De Aprendizaje####
---Para su correcto funcionamiento, se debe crear una base de datos con el script dentro del archivo "Database Script.txt" en Postgre SQL,
-El nombre de la BD debe ser "Test" y su contraseña "1234".
-
-De otra forma, se podrán crear y manipular datos pero al cerrar la aplicación estos no se guardarán--
+--El diagrama de la base de datos y su script se encuentran en /src
 
 Para este proyecto utilicé un stack de solo python (Con FreeSimplyGUI) y PostgreSQL ya que son tecnologías que me sentía seguro de
 utilizar al momento de comenzarlo. Quize aplicar conocimientos de POO, SQL y python.
@@ -13,8 +10,7 @@ coloquialmente "Fue para soltar la mano". Reconozco que podría tener mejoras co
 
 -Interfaz adaptada a pantallas grandes y con más contenido visual.
 -Registrar más de un solo libro con un mismo ISBN.
--Administrar Conexión de base de datos a través de la aplicación.
--Utilización de Base de datos en tiempo real en vez de solo lectura al inicio y sobreescritura al final.
+-Utilización de Base de datos en tiempo real en vez de solo lectura  y sobreescritura .
 -Exportación a csv
 -Busqueda por Generos
 -Busqueda por Editoriales
@@ -25,4 +21,4 @@ De todas formas, en el proceso de crear esta aplicación, fue enriquecedor para 
 fomentarme el estudio de estas tecnologías.
 
 
-pyinstaller -w --onefile --icon=src/icon.ico --name=Gestor de Biblioteca mainGUI.py
+pyinstaller -w --onefile --icon=src/icon.ico --name 'Gestor de Biblioteca' mainGUI.py

@@ -26,16 +26,15 @@ class Biblioteca:
     def eliminar_usuario(self, rut):
         if (self.usuarios.get(rut) is None): raise ValueError("El Usuario no se encuentra en el registro")
         if any (p.rut == rut for p in self.prestamos.values()): raise ValueError("El usuario posee historial de prestamos")
-        self.usuarios.pop(id)
+        self.usuarios.pop(rut)
       
     def prestar_libro(self, prestamo):
-        if prestamo.fecha_prestamo == None and prestamo.id == 'None':
+        if prestamo.fecha_prestamo == None:
             if (self.usuarios.get(prestamo.rut) is None or self.libros.get(prestamo.isbn) is None): raise ValueError ("Usuario o Libro inexistente")
             if not (self.libros[prestamo.isbn].disponible): raise ValueError ("Libro no Disponible")
-            prestamo.fecha_prestamo = datetime.datetime.now()
-            prestamo.id = len(self.prestamos)
+        prestamo.fecha_prestamo = datetime.datetime.now()
         self.usuarios.get(prestamo.rut).libros_prestados.append(self.libros.get(prestamo.isbn))
-        self.libros.get(prestamo.isbn)._disponible = False
+        self.libros.get(prestamo.isbn).disponible = False
 
         self.prestamos[prestamo.id] = prestamo
 
